@@ -15,6 +15,7 @@ def payment_success():
     url = DRF_SERVER_URL + "/api/android/v1/payment/success"
     ret = requests.post(url, headers=headers, data=payment_success_data)
     status_code = ret.status_code
+    # todo: handle if response is not 200 return something
     if status_code is 200:
         return render_template('payment_success.html')
 
@@ -29,6 +30,7 @@ def payment_fail():
     url = DRF_SERVER_URL + "/api/android/v1/payment/fail"
     ret = requests.post(url, headers=headers, data=payment_fail_data)
     status_code = ret.status_code
+    # todo: handle if response is not 200 return something
     if status_code is 200:
         return render_template('payment_fail.html')
 
