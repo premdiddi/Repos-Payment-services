@@ -1,7 +1,7 @@
 #!flask/bin/python
 from flask import Flask, request, render_template
 import requests
-from secrets import auth_key, DRF_SERVER_URL
+from secrets import auth_key, DRF_SERVER_URL, HOST, PORT
 app = Flask(__name__)
 
 
@@ -34,4 +34,4 @@ def payment_fail():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host=HOST, port=PORT, debug=True)
