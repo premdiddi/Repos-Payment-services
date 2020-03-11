@@ -1,39 +1,43 @@
 #!flask/bin/python
 from flask import Flask, request, render_template
 import requests
-from secrets import auth_key, DRF_SERVER_URL, HOST, PORT
+import razorpay
+import json
+from secrets import auth_key, DRF_SERVER_URL, HOST, PORT, RAZORPAY_APP_ID, RAZORPAY_APP_SECRET
+razorpay_client = razorpay.Client(auth=(RAZORPAY_APP_ID, RAZORPAY_APP_SECRET))
 app = Flask(__name__)
 
 
-@app.route('/api/payment/success/', methods=['POST'])
-def payment_success():
-    payment_success_data = request.form.to_dict()
-    headers = {
-        'authkey': auth_key
-    }
-
-    url = DRF_SERVER_URL + "/api/android/v1/payment/success"
-    ret = requests.post(url, headers=headers, data=payment_success_data)
-    status_code = ret.status_code
-    # todo: handle if response is not 200 return something
-    if status_code is 200:
-        return render_template('payment_success.html')
+@app.route('/')
+def app_create():
+    return render_template('app.html')
 
 
-@app.route('/api/payment/fail/', methods=['POST'])
-def payment_fail():
-    payment_fail_data = request.form.to_dict()
-    headers = {
-        'authkey': auth_key
-    }
+@app.route('/generate_order_id', methods=['POST'])
+def razorpay_generate_order():
+    order_amount = 50000
+    order_currency = 'INR'
+    order_receipt = 'PRO-009093'
+    # notes = {'Delivering address': 'Aundh, Pune'}  # OPTIONAL
+    res = razorpay_client.order.create(amount=order_amount, currency=order_currency, receipt=order_receipt,
+                                       payment_capture='1')
+    order_id = res['id']
+    print('Razorpay order create api response', res)
+    return json.dumps(res)
 
-    url = DRF_SERVER_URL + "/api/android/v1/payment/fail"
-    ret = requests.post(url, headers=headers, data=payment_fail_data)
-    status_code = ret.status_code
-    # todo: handle if response is not 200 return something
-    if status_code is 200:
-        return render_template('payment_fail.html')
+
+@app.route('/charge', methods=['POST'])
+def app_charge():
+    amount = 5100
+    payment_id = request.form['razorpay_payment_id']
+    razorpay_client.payment.capture(payment_id, amount)
+    return json.dumps(razorpay_client.payment.fetch(payment_id))
 
 
 if __name__ == '__main__':
     app.run(host=HOST, port=PORT, debug=True)
+
+# razorpay order create response
+# {"id": "order_EQ8mP6AZQqNzZg", "entity": "order", "amount": 50000, "amount_paid": 0, "amount_due": 50000, "currency":
+# "INR", "receipt": "PRO-009093", "offer_id": null, "status": "created", "attempts": 0, "notes": [], "created_at":
+# 1583761376}
