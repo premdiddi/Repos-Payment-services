@@ -255,12 +255,17 @@ hr:after {
             <div class='_404'>500</div>
             <hr>
             <!--<div class='_1'>error</div>-->
-            <div class='_2'>Something went wrong.</div>
-            <div class='_2'>Kindly contact Repos Support Team.</div>
+            <div class='_2'>Something went wrong. You will be redirected shortly.</div>
+            <div class='_2'>Kindly contact Repos Support Team for assistance.</div>
             <!--<a class='btn' href='#'>error</a>-->
         </div>
 </div>
 
+<script type="text/javascript">
+    setTimeout(function(){
+        window.location = "{{ host }}payment/failed";
+    }, 2000);
+</script>
 </body>
 
 </html>
