@@ -11,6 +11,16 @@ app = Flask(__name__)
 @app.route('/payment/success', methods=['POST'])
 def payment_success():
     payment_success_data = request.form.to_dict()
+    '''
+    payment success data body will send back a dict with
+    { 
+        'order_id': 'order_abc123', 
+        'razorpay_payment_id': 'pay_xyz123', 
+        'razorpay_order_id': 'order_abc123', 
+        'razorpay_signature': 'a-really-long-string' 
+    } 
+    '''
+
     headers = {
         'authkey': auth_key
     }
@@ -19,8 +29,8 @@ def payment_success():
     ret = requests.post(url, headers=headers, data=payment_success_data)
     status_code = ret.status_code
     # todo: handle if response is not 200 return something
-    if status_code is 200:
-        return render_template('payment_success.html')
+    # if status_code is 200:
+    return render_template('payment_success.html')
 
 
 @app.route('/payment/fail', methods=['POST'])
