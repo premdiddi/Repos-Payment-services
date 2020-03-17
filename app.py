@@ -31,24 +31,6 @@ def payment_fail():
     data_in_bytes = request.data
     payment_fail_decoded_data = json.loads(data_in_bytes.decode("utf-8"))
     payment_fail_data = payment_fail_decoded_data['payload']['payment']['entity']
-    print(payment_fail_data)
-    url = DRF_SERVER_URL + "/api/android/v1/payment/fail"
-    ret = requests.post(url, headers=headers, data=payment_fail_data)
-    status_code = ret.status_code
-    # todo: handle if response is not 200 return something
-    if status_code is 200:
-        return render_template('payment_fail.html')
-
-
-@app.route('/payment/response', methods=['POST'])
-def payment_response():
-    headers = {
-        'authkey': auth_key
-    }
-    data_in_bytes = request.data
-    payment_fail_decoded_data = json.loads(data_in_bytes.decode("utf-8"))
-    payment_fail_data = payment_fail_decoded_data['payload']['payment']['entity']
-    print(payment_fail_data)
     url = DRF_SERVER_URL + "/api/android/v1/payment/fail"
     ret = requests.post(url, headers=headers, data=payment_fail_data)
     status_code = ret.status_code
