@@ -3,7 +3,7 @@ from flask import Flask, request, render_template
 import requests
 import razorpay
 import json
-from secrets import CLIENT_ID, CLIENT_SECRET, DRF_SERVER_URL, HOST, PORT, RAZORPAY_APP_ID, RAZORPAY_APP_SECRET
+from secrets import CLIENT_ID, CLIENT_SECRET, DRF_SERVER_URL, HOST, PORT, RAZORPAY_APP_ID, RAZORPAY_APP_SECRET, FRONTEND_HOST
 
 razorpay_client = razorpay.Client(auth=(RAZORPAY_APP_ID, RAZORPAY_APP_SECRET))
 app = Flask(__name__, template_folder='templates')
@@ -37,10 +37,10 @@ def payment_success():
     # todo: logging
     host = "http://%s:%s/" % (request.remote_addr, str(request.environ['REMOTE_PORT']))
     if status_code is 200:
-        return render_template('payment_success.html', host=host)
+        return render_template('payment_success.html', host=FRONTEND_HOST)
     else:
         # todo: logging
-        return render_template('payment_fail.html', host=host), 500
+        return render_template('payment_fail.html', host=FRONTEND_HOST), 500
 
 
 @app.route('/payment/fail', methods=['POST'])
@@ -55,11 +55,11 @@ def payment_fail():
     status_code = ret.status_code
     # todo: handle if response is not 200 return something
     # todo: logging
-    host = "http://%s:%s/" % (request.remote_addr, str(request.environ['REMOTE_PORT']))
+    # host = "http://%s:%s/" % (request.remote_addr, str(request.environ['REMOTE_PORT']))
     if status_code is 200:
-        return render_template('payment_fail.html', host=host), 500
+        return render_template('payment_fail.html', host=FRONTEND_HOST), 500
     else:
-        return render_template('payment_fail.html', host=host), 500
+        return render_template('payment_fail.html', host=FRONTEND_HOST), 500
 
 
 if __name__ == '__main__':
