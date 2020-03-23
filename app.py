@@ -88,7 +88,7 @@ def payment_fail():
             payment_log = PaymentLogs()
             payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
             payment_log.save()
-            return render_template('payment_fail.html', host=FRONTEND_HOST), 500
+            return render_template('payment_fail.html', host=FRONTEND_HOST), 200
         else:
             body += '-failed to fail payment' + ' with status ' + str(status_code) + ' from drf'
             payment_log = PaymentLogs()
