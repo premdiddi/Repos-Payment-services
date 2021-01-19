@@ -17,6 +17,10 @@ drf_endpoint_headers = {
     'Authorisation': CLIENT_ID + "-" + CLIENT_SECRET,
 }
 
+RAZOR_ORDER_ID = 'razor_order_id'
+RAZOR_PAYMENT_ID = 'razor_payment_id'
+RAZOR_SIGNATURE = 'razor_signature'
+
 
 @app.route('/payment/success', methods=['POST'])
 def payment_success():
@@ -30,16 +34,16 @@ def payment_success():
         { 
             'order_id': 'order_abc123', 
             'razorpay_payment_id': 'pay_xyz123', 
-            'razorpay_order_id': 'order_abc123', 
+            'razorpay_order_id': 'razorpay_order_id', 
             'razorpay_signature': 'a-really-long-string' 
         } 
         '''
 
         url = DRF_SERVER_URL + "/api/android/v1/payment/verify"
         ret = requests.post(url, headers=drf_endpoint_headers, data={
-            'razor_order_id': payment_success_data['razorpay_order_id'],
-            'razor_payment_id': payment_success_data['razorpay_payment_id'],
-            'razor_signature': payment_success_data['razorpay_signature'],
+            RAZOR_ORDER_ID: payment_success_data['razorpay_order_id'],
+            RAZOR_PAYMENT_ID: payment_success_data['razorpay_payment_id'],
+            RAZOR_SIGNATURE: payment_success_data['razorpay_signature'],
         })
         status_code = ret.status_code
         # todo: handle if response is not 200 return something
