@@ -49,25 +49,25 @@ def payment_success():
         # todo: handle if response is not 200 return something
         host = "http://%s:%s/" % (request.remote_addr, str(request.environ['REMOTE_PORT']))
         if status_code is 200:
-            body += '-successfully done payment from web with status 200 from drf'
-            payment_log = PaymentLogs()
-            payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
-            payment_log.save()
+            # body += '-successfully done payment from web with status 200 from drf'
+            # payment_log = PaymentLogs()
+            # payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword) 
+            # payment_log.save()
             return render_template('payment_success.html', host=FRONTEND_HOST)
         else:
-            body += '-failed payment from web with status ' + str(status_code) + ' from drf'
-            payment_log = PaymentLogs()
-            payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
-            payment_log.save()
+            # body += '-failed payment from web with status ' + str(status_code) + ' from drf'
+            # payment_log = PaymentLogs()
+            # payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
+            # payment_log.save()
             return render_template('payment_fail.html', host=FRONTEND_HOST), 500
     except Exception as e:
         print(e)
-        body = 'initiating payment success from web c' \
-               'ounter error-' + str(e)
-        keyword = 'payment-success-from-web'
-        payment_log = PaymentLogs()
-        payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
-        payment_log.save()
+        # body = 'initiating payment success from web c' \
+        #        'ounter error-' + str(e)
+        # keyword = 'payment-success-from-web'
+        # payment_log = PaymentLogs()
+        # payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
+        # payment_log.save()
         return render_template('payment_fail.html', host=FRONTEND_HOST), 500
 
 
@@ -88,24 +88,24 @@ def payment_fail():
         # todo: logging
         # host = "http://%s:%s/" % (request.remote_addr, str(request.environ['REMOTE_PORT']))
         if status_code is 200:
-            body += '-done fail payment with status 200 from drf'
-            payment_log = PaymentLogs()
-            payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
-            payment_log.save()
+            # body += '-done fail payment with status 200 from drf'
+            # payment_log = PaymentLogs()
+            # payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
+            # payment_log.save()
             return render_template('payment_fail.html', host=FRONTEND_HOST), 200
         else:
-            body += '-failed to fail payment' + ' with status ' + str(status_code) + ' from drf'
-            payment_log = PaymentLogs()
-            payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
-            payment_log.save()
+            # body += '-failed to fail payment' + ' with status ' + str(status_code) + ' from drf'
+            # payment_log = PaymentLogs()
+            # payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
+            # payment_log.save()
             return render_template('payment_fail.html', host=FRONTEND_HOST), 500
     except Exception as e:
         print(e)
-        body = '-payment fail from microservice failed with error-' + str(e)
-        keyword = 'payment-fail-from-micoservice'
-        payment_log = PaymentLogs()
-        payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
-        payment_log.save()
+        # body = '-payment fail from microservice failed with error-' + str(e)
+        # keyword = 'payment-fail-from-micoservice'
+        # payment_log = PaymentLogs()
+        # payment_log.save_payment_log_in_elasticsearch(body=body, keyword=keyword)
+        # payment_log.save()
         return render_template('payment_fail.html', host=FRONTEND_HOST), 500
 
 
